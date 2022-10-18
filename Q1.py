@@ -2,7 +2,10 @@
 #used to organize information, and then construct the 
 #class hierarchy and association according to specification.
 
-class ClubHead:
+from abc import ABC, abstractmethod
+
+
+class ClubHead(ABC):
     def __init__(self, loft: float, weight: int):
         """ constructor that execute when an object is created """
         self._loft = loft
@@ -19,6 +22,7 @@ class ClubHead:
         return self._weight
 
     #get height method
+    @abstractmethod
     def getHeight(self):
         """ Returns height of the clubhead"""
         pass
@@ -27,10 +31,8 @@ class ClubHead:
     def __str__(self):
         return "{},{}".format(self._loft, self._weight)
 
-# testHead = ClubHead(9.0,200)
-# print(testHead.getHeight())
 
-
+#Q1(b)
 class WoodHead(ClubHead):
     def __init__(self,loft:float, weight:int, size:int):
         """ constructor that execute when an object is created """
@@ -41,11 +43,11 @@ class WoodHead(ClubHead):
     def getHeight(self):
         """find height for WoodHead"""
         height = self._size/400
-        return height
+        return f'{height:.1f} inch'
 
     def __str__(self):
         '''Method that returns a string of WoodHead'''
-        return "Wood,{},{},{}".format(self._loft, self._weight,self._size)
+        return "Wood,{},{}".format(super().__str__(),self._size)
 
 
 class IronHead(ClubHead):
@@ -58,11 +60,12 @@ class IronHead(ClubHead):
     def getHeight(self):
         """find height for IronHead"""
         height = 1
-        return height
+        return f'{height} inch'
 
     def __str__(self):
         '''Method that returns a string of IronHead'''
-        return "Iron,{},{},{}".format(self._loft,self._weight,self._material)
+        return "Iron,{},{}".format(super().__str__(),self._material)
+
 
 class PutterHead(ClubHead):
     def __init__(self, loft:float, weight:int, style:str):
@@ -73,14 +76,17 @@ class PutterHead(ClubHead):
     def getHeight(self):
         """find height for PutterHead"""
         if self._style == "Blade":
-            return 1
+            height = 1
+            return f'{height} inch'
         else:
-            return 0.5
+            height = 0.5
+            return 0.5 + 'inch'
     
     def __str__(self):
         '''Method that returns a string of PutterHead'''
-        return "Putter,{},{},{}".format(self._loft, self._weight, self._style)
+        return "Putter,{},{}".format(super().__str__(), self._style)
 
+#Q1(c)
 def main():
     putter = PutterHead(3.5,365,'Blade')
     iron = IronHead(37.5,285, 'Forged')
